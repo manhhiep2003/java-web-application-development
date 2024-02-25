@@ -5,9 +5,10 @@
  */
 package hiepdm.servlet;
 
+import hiepdm.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,16 +19,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Hiep
  */
-@WebServlet(name = "DispatchServlet", urlPatterns = {"/DispatchServlet"})
-public class DispatchServlet extends HttpServlet {
+@WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/UpdateAccountServlet"})
+public class UpdateAccountServlet extends HttpServlet {
 
-    private final String LOGIN_PAGE = "login.html";
-    private final String LOGIN_CONTROLLER = "LoginServlet";
-    private final String SEARCH_LASTNAME_CONTROLLER = "SearchLastnameServlet";
-    private final String DELETE_ACCOUNT_CONTROLLER = "DeleteAccountServlet";
-    private final String STARTUP_CONTROLLER = "StartupServlet";
-    private final String UPDATE_CONTROLLER = "UpdateAccountServlet";
-    
+    private final String ERROR_PAGE = "error.html";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,28 +36,35 @@ public class DispatchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        //1. Which button did user click?
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
-
+        //1. Get all client information
+        String username = request.getParameter("txtUsername");
+        String password = request.getParameter("txtPassword");
+        String isAdmin = request.getParameter("chkAdmin");
+        boolean role = false;
+        String searchValue = request.getParameter("lastSearchValue");
+        String url = ERROR_PAGE;
         try {
-            if (button == null) { //first time and app start up
-                //transfer Login page
-                //check cookies to determine which function is tranfered
-                url = STARTUP_CONTROLLER;
-            } else if (button.equals("Login")) { //User clicked Login
-                url = LOGIN_CONTROLLER;
-            } else if (button.equals("Search")) { //User clicked Search
-                url = SEARCH_LASTNAME_CONTROLLER;
-            } else if (button.equals("Delete")) {
-                url = DELETE_ACCOUNT_CONTROLLER;
-            } else if (button.equals("Update")) {
-                url = UPDATE_CONTROLLER;
+            //2. Call Model
+            //2.1 New DAO Object
+            RegistrationDAO dao = new RegistrationDAO();
+            //2.3 Call method of DAO
+            if (isAdmin != null) {
+                role = true;
             }
+            boolean result = dao.updateAccount(username, password, role);
+
+            //3. Process result
+            if (result) {
+                url = "DispatchServlet"
+                        + "?btAction=Search"
+                        + "&txtSearchValue=" + searchValue;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
         }
     }
 

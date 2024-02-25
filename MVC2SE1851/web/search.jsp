@@ -22,7 +22,6 @@
         %>
         <font color="red"> Welcome, <%= username%> </font> 
         <%
-
             }
         %>
         <h1>Search Page</h1>

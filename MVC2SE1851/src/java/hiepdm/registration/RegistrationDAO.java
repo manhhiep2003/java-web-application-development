@@ -32,7 +32,6 @@ public class RegistrationDAO implements Serializable {
         PreparedStatement stm = null;
         ResultSet rs = null;
         boolean result = false;
-
         try {
             //1. get Connetion
             con = DBHelper.getConnection();
@@ -130,6 +129,42 @@ public class RegistrationDAO implements Serializable {
                 //3. Create Statement Object
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
+                //4. Execute Query
+                int effectRows = stm.executeUpdate();
+                //5. Process Result
+                if (effectRows > 0) {
+                    result = true;
+                }
+                //username and password have been existed
+            }//connection has been available
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+
+    public boolean updateAccount(String username, String password, boolean role)
+            throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        boolean result = false;
+        try {
+            //1. get Connetion
+            con = DBHelper.getConnection();
+            if (con != null) {
+                //2. create SQL String
+                String sql = "Update Registration "
+                        + "Set password = ?, isAdmin = ? Where username = ? ";
+                //3. Create Statement Object
+                stm = con.prepareStatement(sql);
+                stm.setString(1, password);
+                stm.setBoolean(2, role);
+                stm.setString(3, username);
                 //4. Execute Query
                 int effectRows = stm.executeUpdate();
                 //5. Process Result
