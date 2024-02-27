@@ -9,6 +9,7 @@ import hiepdm.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.SessionTrackingMode;
 import javax.servlet.annotation.WebServlet;
@@ -56,7 +57,7 @@ public class DeleteAccountServlet extends HttpServlet {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
             //forward is issues because...

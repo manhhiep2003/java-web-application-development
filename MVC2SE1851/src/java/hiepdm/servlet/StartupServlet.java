@@ -9,6 +9,7 @@ import hiepdm.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -58,7 +59,7 @@ public class StartupServlet extends HttpServlet {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        } catch (NamingException ex) {
             ex.printStackTrace();
         } finally {
             response.sendRedirect(url);

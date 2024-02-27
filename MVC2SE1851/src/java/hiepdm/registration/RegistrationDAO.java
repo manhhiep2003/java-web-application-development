@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
 
 /**
  *
@@ -27,7 +28,7 @@ public class RegistrationDAO implements Serializable {
     }
 
     public boolean checkLogin(String username, String password)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -67,7 +68,7 @@ public class RegistrationDAO implements Serializable {
     }
 
     public void searchLastName(String searchValue)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -114,7 +115,7 @@ public class RegistrationDAO implements Serializable {
     }
 
     public boolean deleteAccount(String username)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
 
@@ -125,7 +126,7 @@ public class RegistrationDAO implements Serializable {
             if (con != null) {
                 //2. create SQL String
                 String sql = "Delete From Registration "
-                        + "Where username = ?";
+                        + "Where username = ? ";
                 //3. Create Statement Object
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
@@ -149,7 +150,7 @@ public class RegistrationDAO implements Serializable {
     }
 
     public boolean updateAccount(String username, String password, boolean role)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;

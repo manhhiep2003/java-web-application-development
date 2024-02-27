@@ -3,13 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/util/DBHelper.java</file>
             <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/LoginServlet.java</file>
             <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/DeleteAccountServlet.java</file>
             <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/StartupServlet.java</file>
-            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/DispatchServlet.java</file>
-            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/UpdateServlet.java</file>
-            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/web/search.jsp</file>
+            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/SearchLastnameServlet.java</file>
+            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/AddToCartServlet.java</file>
+            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/web/product.html</file>
             <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/registration/RegistrationDAO.java</file>
+            <file>file:/D:/FPTU/SPRING2024/PRJ301/MVC2SE1851/src/java/hiepdm/servlet/UpdateAccountServlet.java</file>
         </group>
     </open-files>
 </project-private>

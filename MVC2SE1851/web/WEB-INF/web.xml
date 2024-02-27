@@ -17,8 +17,7 @@
         <welcome-file>DispatchServlet</welcome-file>
     </welcome-file-list>
     <resource-ref>
-        <description>dynamic connection
-</description>
+        <description>dynamic connection</description>
         <res-ref-name>DBCon</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>

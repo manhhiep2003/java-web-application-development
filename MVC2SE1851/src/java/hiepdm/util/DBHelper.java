@@ -20,26 +20,25 @@ import javax.sql.DataSource;
  */
 public class DBHelper implements Serializable {
 
-    public static Connection getConnection()
-            throws ClassNotFoundException, SQLException {
-        //1. Load Driver (driver is available in project)
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        //2. Create Connection String
-        String url = "jdbc:sqlserver://localhost:1433;"
-                + "databaseName=SE1851;"
-                + "instanceName=SQLEXPRESS";
-        //3. Open Connection
-        Connection con = DriverManager.getConnection(url, "sa", "123456");
-        return con;
-    }
-    
 //    public static Connection getConnection()
-//            throws ClassNotFoundException, SQLException, NamingException {
-//        Connection con = null;
-//        Context context = new InitialContext();
-//        Context end = (Context) context.lookup("java:comp/env");
-//        DataSource ds = (DataSource) end.lookup("DBCon");
-//        con = ds.getConnection();
+//            throws ClassNotFoundException, SQLException {
+//        //1. Load Driver (driver is available in project)
+//        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//        //2. Create Connection String
+//        String url = "jdbc:sqlserver://localhost:1433;"
+//                + "databaseName=SE1851;"
+//                + "instanceName=SQLEXPRESS";
+//        //3. Open Connection
+//        Connection con = DriverManager.getConnection(url, "sa", "123456");
 //        return con;
 //    }
+    
+    public static Connection getConnection()
+            throws SQLException, NamingException {
+        Context context = new InitialContext();
+        Context end = (Context) context.lookup("java:comp/env");
+        DataSource ds = (DataSource) end.lookup("DBCon");
+        Connection con = ds.getConnection();
+        return con;
+    }
 }

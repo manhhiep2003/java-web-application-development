@@ -5,28 +5,25 @@
  */
 package hiepdm.servlet;
 
-import hiepdm.registration.RegistrationDAO;
-import hiepdm.util.DBHelper;
+import hiepdm.cart.CartObject;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hiep
  */
-public class LoginServlet extends HttpServlet {
-
-    private final String INVALID_PAGE = "invalid.html";
-    private final String SEARCH_PAGE = "search.html";
+@WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCartServlet"})
+public class AddToCartServlet extends HttpServlet {
+    
+    private final String ERROR_PAGE = "error.html";
+    private final String PRODUCT_PAGE = "product.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,34 +37,26 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        //1. Get all client infomation
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        String url = INVALID_PAGE;
+        String url = ERROR_PAGE;
         try {
-            //2. call model
-            //2.1 New DAO Object
-            RegistrationDAO dao = new RegistrationDAO();
-            //2.2 Call method of DAO
-            boolean result = dao.checkLogin(username, password);
-            //3. process result
+            //1. Customer goes to the cart place
+            HttpSession session = request.getSession();
+            //2. Customer takes his/her cart
+            //Call DAO
+            CartObject cart = (CartObject) session.getAttribute("CART");
+            if (cart == null) {
+                cart = new CartObject();
+            }
+            //3. Customer drops item to his/her cart
+            String item = request.getParameter("cboBook");
+            boolean result = cart.addItemToCart(item);
+            session.setAttribute("CART", cart);
             if (result) {
-                url = SEARCH_PAGE;
-                //Write cookies
-                Cookie cookie = new Cookie(username, password);
-                cookie.setMaxAge(60 * 3);
-                response.addCookie(cookie);
-            }//end username and password is authenticated
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
+                //4. Customer continuely goes to shopping
+                url = PRODUCT_PAGE;
+            }//Add to cart is success
         } finally {
-            //response.sendRedirect(url);
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-            out.close();
+            response.sendRedirect(url);
         }
     }
 
