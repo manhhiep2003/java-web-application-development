@@ -24,6 +24,7 @@
         <%
             }
         %>
+        <a href="DispatchServlet?btAction=Logout">Logout</a>
         <h1>Search Page</h1>
         <form action="DispatchServlet">
             Search value <input type="text" name="txtSearchValue" 
@@ -78,7 +79,7 @@
                                checked="checked"
                                <%
                                    }//role is an admin
-%>
+                               %>
                                />
                     </td>
                     <td><a href="<%= urlRewriting%>">Delete</a></td>
@@ -107,6 +108,6 @@
     <%
             }//end result is null
         }//second time 
-    %>
+%>
 </body>
 </html>

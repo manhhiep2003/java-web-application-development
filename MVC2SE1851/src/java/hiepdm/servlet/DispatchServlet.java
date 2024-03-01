@@ -29,7 +29,9 @@ public class DispatchServlet extends HttpServlet {
     private final String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
     private final String ADD_TO_CART_CONTROLLER = "AddToCartServlet";
     private final String VIEW_CART_PAGE = "viewCart.jsp";
-    
+    private final String REMOVE_ITEM_CONTROLLER = "RemoveItemFromCartServlet";
+    private final String LOGOUT_CONTROLLER = "LogoutServlet";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,11 +44,9 @@ public class DispatchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         //1. Which button did user click?
         String button = request.getParameter("btAction");
         String url = LOGIN_PAGE;
-
         try {
             if (button == null) { //first time and app start up
                 //transfer Login page
@@ -64,6 +64,10 @@ public class DispatchServlet extends HttpServlet {
                 url = ADD_TO_CART_CONTROLLER;
             } else if (button.equals("View Your Cart")) {
                 url = VIEW_CART_PAGE;
+            } else if (button.equals("Remove Selected Items")) {
+                url = REMOVE_ITEM_CONTROLLER;
+            } else if (button.equals("Logout")) {
+                url = LOGOUT_CONTROLLER;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

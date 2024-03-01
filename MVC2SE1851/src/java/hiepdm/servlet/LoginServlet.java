@@ -39,8 +39,7 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        response.setContentType("text/html;charset=UTF-8");       
         //1. Get all client infomation
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
@@ -67,7 +66,6 @@ public class LoginServlet extends HttpServlet {
             //response.sendRedirect(url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
         }
     }
 

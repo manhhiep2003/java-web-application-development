@@ -26,38 +26,47 @@
                     if (items != null) {
                         //4. All items is shown
         %>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    int count = 0;
-                    for (String key : items.keySet()) {
-                        
-                %>
-                <tr>
-                    <td><%= ++count %></td>
-                    <td><%= key %></td>
-                    <td><%= items.get(key) %></td>
-                </tr>
-                <%
-                    }//traverse items/map
-                %>
-            </tbody>
-        </table>
-
-        <%                        
-            return;
+        <form action="DispatchServlet"> 
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        int count = 0;
+                        for (String key : items.keySet()) {
+                    %>
+                    <tr>
+                        <td><%= ++count%></td>
+                        <td><%= key%></td>
+                        <td><%= items.get(key)%></td>
+                        <td><input type="checkbox" name="chkItem" value="<%= key%>"/></td>
+                    </tr>
+                    <%
+                        }//traverse items/map
+                    %>
+                    <tr>
+                        <td colspan="3">
+                            <a href="product.html">Add More Books to Your Cart</a>
+                        </td>
+                        <td>
+                            <input type="submit" value="Remove Selected Items" name="btAction" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <%
+                        return;
                     }
                 }//cart has existed
             }//session has existed
         %>
-
         <h2>
             <font color="red">
             No cart is existed!!!

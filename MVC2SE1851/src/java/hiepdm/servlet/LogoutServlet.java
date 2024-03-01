@@ -5,29 +5,23 @@
  */
 package hiepdm.servlet;
 
-import hiepdm.registration.RegistrationDAO;
-import hiepdm.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hiep
  */
-@WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
-public class SearchLastnameServlet extends HttpServlet {
-
-    private final String SEARCH_PAGE = "search.html";
-    private final String RESULT_PAGE = "search.jsp";
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
+    
+    private final String LOGIN_PAGE = "login.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,28 +35,16 @@ public class SearchLastnameServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //1. Get all client infomations
-        String searchValue = request.getParameter("txtSearchValue");
-        String url = SEARCH_PAGE;
+        String url = LOGIN_PAGE;
         try {
-            if (!searchValue.trim().isEmpty()) {
-                //2. Call Model
-                //2.1 New DAO Object
-                RegistrationDAO dao = new RegistrationDAO();
-                //2.2 Call method of DAO
-                dao.searchLastName(searchValue);
-                List<RegistrationDTO> result = dao.getAccountList();
-                //3. Process Result
-                request.setAttribute("SEARCH_RESULT", result);
-                url = RESULT_PAGE;
-            }//End Search value
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
+            //Get current session
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+                url = LOGIN_PAGE;
+            }
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
         }
     }
 

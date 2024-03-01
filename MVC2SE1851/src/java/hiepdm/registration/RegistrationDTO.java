@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Hiep
  */
 public class RegistrationDTO implements Serializable {
+
     private String username;
     private String password;
     private String fullname; //mapping lastname field
@@ -26,7 +27,7 @@ public class RegistrationDTO implements Serializable {
         this.fullname = fullname;
         this.role = role;
     }
-    
+
     /**
      * @return the username
      */
@@ -82,6 +83,5 @@ public class RegistrationDTO implements Serializable {
     public void setRole(boolean role) {
         this.role = role;
     }
-    
-    
+
 }

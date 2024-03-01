@@ -5,29 +5,23 @@
  */
 package hiepdm.servlet;
 
-import hiepdm.registration.RegistrationDAO;
-import hiepdm.registration.RegistrationDTO;
+import hiepdm.cart.CartObject;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hiep
  */
-@WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
-public class SearchLastnameServlet extends HttpServlet {
-
-    private final String SEARCH_PAGE = "search.html";
-    private final String RESULT_PAGE = "search.jsp";
+@WebServlet(name = "RemoveItemFromCartServlet", urlPatterns = {"/RemoveItemFromCartServlet"})
+public class RemoveItemFromCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,28 +35,34 @@ public class SearchLastnameServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //1. Get all client infomations
-        String searchValue = request.getParameter("txtSearchValue");
-        String url = SEARCH_PAGE;
         try {
-            if (!searchValue.trim().isEmpty()) {
-                //2. Call Model
-                //2.1 New DAO Object
-                RegistrationDAO dao = new RegistrationDAO();
-                //2.2 Call method of DAO
-                dao.searchLastName(searchValue);
-                List<RegistrationDTO> result = dao.getAccountList();
-                //3. Process Result
-                request.setAttribute("SEARCH_RESULT", result);
-                url = RESULT_PAGE;
-            }//End Search value
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (NamingException ex) {
-            ex.printStackTrace();
+            //1. Customer goes to his/her cart place
+            HttpSession session = request.getSession(false);//session can be timeout so must check false
+            if (session != null) {
+                //2. Customer takes his/her cart
+                CartObject cart = (CartObject) session.getAttribute("CART");
+                if (cart != null) {
+                    //3. Customer gets items
+                    Map<String, Integer> items = cart.getItems();
+                    if (items != null) {
+                        //4. Customer removes item from items
+                        String[] selectedItems = request.getParameterValues("chkItem");
+                        if (selectedItems != null) {
+                            for (String item : selectedItems) {
+                                cart.removeItemFromCart(item);
+                            }//Remove action is success
+                            session.setAttribute("CART", cart);
+                        }//User did not check anything
+                    }//items has existed
+                }//cart has existed
+            }//session has existed
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            //refresh --> call previous function using URL Rewriting technique
+            String urlRewriting = "DispatchServlet"
+                    + "?btAction=View Your Cart";
+            //dont have any parameters when click button so dont need any paremeters
+            response.sendRedirect(urlRewriting);
+            //cant use forward because btAction is duplicate
         }
     }
 

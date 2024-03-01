@@ -72,7 +72,6 @@ public class RegistrationDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-
         try {
             //1. get Connetion
             con = DBHelper.getConnection();
