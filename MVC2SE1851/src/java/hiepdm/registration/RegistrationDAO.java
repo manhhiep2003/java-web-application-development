@@ -27,18 +27,18 @@ public class RegistrationDAO implements Serializable {
         return accountList;
     }
 
-    public boolean checkLogin(String username, String password)
+    public RegistrationDTO checkLogin(String username, String password)
             throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        boolean result = false;
+        RegistrationDTO result = null;
         try {
             //1. get Connetion
             con = DBHelper.getConnection();
             if (con != null) {
                 //2. create SQL String
-                String sql = "Select username "
+                String sql = "Select lastname, isAdmin "
                         + "From Registration "
                         + "Where username = ? "
                         + "And password = ? ";
@@ -50,7 +50,10 @@ public class RegistrationDAO implements Serializable {
                 rs = stm.executeQuery();
                 //5. Process Result
                 if (rs.next()) {
-                    result = true;
+                    //map - set data from rs and set data to DTO properties
+                    String fullname = rs.getString("lastname");
+                    boolean role = rs.getBoolean("isAdmin");
+                    result = new RegistrationDTO(username, null, fullname, role);
                 }//username and password have been existed
             }//connection has been available
         } finally {

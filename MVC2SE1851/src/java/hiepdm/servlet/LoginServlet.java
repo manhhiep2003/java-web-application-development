@@ -6,6 +6,7 @@
 package hiepdm.servlet;
 
 import hiepdm.registration.RegistrationDAO;
+import hiepdm.registration.RegistrationDTO;
 import hiepdm.util.DBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
     private final String INVALID_PAGE = "invalid.html";
-    private final String SEARCH_PAGE = "search.html";
+    private final String SEARCH_PAGE = "search.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +41,7 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");       
+        response.setContentType("text/html;charset=UTF-8");
         //1. Get all client infomation
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
@@ -49,14 +51,17 @@ public class LoginServlet extends HttpServlet {
             //2.1 New DAO Object
             RegistrationDAO dao = new RegistrationDAO();
             //2.2 Call method of DAO
-            boolean result = dao.checkLogin(username, password);
+            //boolean result = dao.checkLogin(username, password);
+            RegistrationDTO result = dao.checkLogin(username, password);
             //3. process result
-            if (result) {
+            if (result != null) {
                 url = SEARCH_PAGE;
+                HttpSession session = request.getSession();
+                session.setAttribute("USERINFO", result);
                 //Write cookies
-                Cookie cookie = new Cookie(username, password);
-                cookie.setMaxAge(60 * 3);
-                response.addCookie(cookie);
+                //Cookie cookie = new Cookie(username, password);
+                //cookie.setMaxAge(60 * 3);
+                //response.addCookie(cookie);
             }//end username and password is authenticated
         } catch (SQLException ex) {
             ex.printStackTrace();

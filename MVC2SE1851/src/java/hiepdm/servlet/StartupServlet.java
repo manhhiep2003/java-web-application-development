@@ -6,6 +6,7 @@
 package hiepdm.servlet;
 
 import hiepdm.registration.RegistrationDAO;
+import hiepdm.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,7 +44,7 @@ public class StartupServlet extends HttpServlet {
         String url = LOGIN_PAGE;
         try {
             //1. Check existed cookies
-            Cookie[] cookies = request.getCookies();
+            Cookie[] cookies = request.getCookies();   
             if (cookies != null) {
                 //2. Get name and value (username and password)
                 Cookie newestCookie = cookies[cookies.length - 1];
@@ -50,13 +52,13 @@ public class StartupServlet extends HttpServlet {
                 String password = newestCookie.getValue();
                 //3. Check Login (call Model)
                 RegistrationDAO dao = new RegistrationDAO();
-                boolean result = dao.checkLogin(username, password);
+                //boolean result = dao.checkLogin(username, password);
+                RegistrationDTO result = dao.checkLogin(username, password);
                 //4. Process result
-                if (result) {
-                    url = SEARCH_PAGE;
+                if (result != null) {
+                    //url = SEARCH_PAGE;
                 }//end authentication is ok
             }//not first time
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (NamingException ex) {

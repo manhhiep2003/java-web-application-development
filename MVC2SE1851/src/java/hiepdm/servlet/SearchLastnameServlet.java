@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
 public class SearchLastnameServlet extends HttpServlet {
 
-    private final String SEARCH_PAGE = "search.html";
+    //private final String SEARCH_PAGE = "search.html";
     private final String RESULT_PAGE = "search.jsp";
 
     /**
@@ -43,7 +43,7 @@ public class SearchLastnameServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         //1. Get all client infomations
         String searchValue = request.getParameter("txtSearchValue");
-        String url = SEARCH_PAGE;
+        String url = RESULT_PAGE;
         try {
             if (!searchValue.trim().isEmpty()) {
                 //2. Call Model
